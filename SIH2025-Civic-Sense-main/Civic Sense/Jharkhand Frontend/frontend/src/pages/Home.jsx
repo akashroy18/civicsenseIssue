@@ -74,7 +74,7 @@ export default function LandingPage() {
 
         {/* Hero Section */}
         <section className="text-center max-w-3xl mx-auto mb-16 ">
-          <h1 className="text-4xl text-gray-900 dark:text-gray-50 font-extrabold mb-4 hover-up-down">
+          <h1 className="text-3xl sm:text-4xl text-gray-900 dark:text-gray-50 font-extrabold mb-4 hover-up-down">
             Report Local Civic Issues — Fast & Easy
           </h1>
           <p className="text-lg text-gray-950 dark:text-gray-300 mb-8 hover-up-down">

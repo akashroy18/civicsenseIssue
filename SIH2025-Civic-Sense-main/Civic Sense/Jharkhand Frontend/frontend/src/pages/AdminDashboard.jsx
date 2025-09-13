@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import API from '../services/api';
 import ReportCard from '../components/ReportCard';
 import { useNavigate } from 'react-router-dom';
+import { FaSearch, FaSyncAlt, FaChartBar } from 'react-icons/fa';
 
 export default function AdminDashboard() {
   const [reports, setReports] = useState([]);
   const [filtered, setFiltered] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Filters & Search State
   const [search, setSearch] = useState('');
   const [filters, setFilters] = useState({
     status: 'all',
@@ -33,7 +33,6 @@ export default function AdminDashboard() {
     fetch();
   }, []);
 
-  // Apply filters/sorting/search
   useEffect(() => {
     let data = [...reports];
 
@@ -100,90 +99,67 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
+    <div className="p-4 sm:p-6 max-w-7xl mx-auto">
       <h2 className="text-3xl text-gray-950 dark:text-gray-50 font-bold mb-6">Admin Dashboard</h2>
 
-      {/* Filters Card */}
-      <div className="bg-white p-4 rounded-md shadow-md flex flex-wrap gap-4 mb-8 items-center dark:bg-gray-900 dark:text-gray-50">
-        <input
-          type="text"
-          aria-label="Search reports"
-          placeholder="Search title or description..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="border rounded p-2 w-full md:w-64 focus:outline-blue-500"
-        />
+      {/* Filters Section */}
+      <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 p-6 rounded-md shadow-md mb-8">
+        <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">Filter Reports</h3>
 
-        <select
-          aria-label="Filter by status"
-          value={filters.status}
-          onChange={(e) => updateFilter('status', e.target.value)}
-          className="border rounded p-2"
-        >
-          <option value="all">All Statuses</option>
-          <option value="pending">Pending</option>
-          <option value="resolved">Resolved</option>
-        </select>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {/* Search */}
+          <div className="relative col-span-full md:col-span-2">
+            <FaSearch className="absolute left-3 top-3 text-gray-400" />
+            <input
+              type="text"
+              aria-label="Search reports"
+              placeholder="Search title or description..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full pl-10 pr-4 py-2 rounded-md border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
 
-        <select
-          aria-label="Filter by priority"
-          value={filters.priority}
-          onChange={(e) => updateFilter('priority', e.target.value)}
-          className="border rounded p-2"
-        >
-          <option value="all">All Priorities</option>
-          <option value="low">Low</option>
-          <option value="medium">Medium</option>
-          <option value="high">High</option>
-        </select>
+          {/* Filter Dropdowns */}
+          {[
+            { key: 'status', label: 'Status', options: ['all', 'pending', 'resolved'] },
+            { key: 'priority', label: 'Priority', options: ['all', 'low', 'medium', 'high'] },
+            { key: 'category', label: 'Category', options: ['all', 'pothole', 'garbage', 'lighting'] },
+            { key: 'department', label: 'Department', options: ['all', 'sanitation', 'public-works', 'electricity'] },
+            { key: 'sortOrder', label: 'Sort', options: ['newest', 'oldest'] }
+          ].map(({ key, label, options }) => (
+            <select
+              key={key}
+              aria-label={label}
+              value={key === 'sortOrder' ? sortOrder : filters[key]}
+              onChange={(e) => key === 'sortOrder' ? setSortOrder(e.target.value) : updateFilter(key, e.target.value)}
+              className="w-full py-2 px-3 rounded-md border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            >
+              {options.map((opt) => (
+                <option key={opt} value={opt}>{opt.charAt(0).toUpperCase() + opt.slice(1).replace('-', ' ')}</option>
+              ))}
+            </select>
+          ))}
+        </div>
 
-        <select
-          aria-label="Filter by category"
-          value={filters.category}
-          onChange={(e) => updateFilter('category', e.target.value)}
-          className="border rounded p-2"
-        >
-          <option value="all">All Categories</option>
-          <option value="pothole">Pothole</option>
-          <option value="garbage">Garbage</option>
-          <option value="lighting">Lighting</option>
-        </select>
+        {/* Action Buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 mt-6 justify-between">
+          <button
+            onClick={clearFilters}
+            className="flex items-center justify-center gap-2 px-4 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-100 rounded-md transition"
+          >
+            <FaSyncAlt />
+            Clear Filters
+          </button>
 
-        <select
-          aria-label="Filter by department"
-          value={filters.department}
-          onChange={(e) => updateFilter('department', e.target.value)}
-          className="border rounded p-2"
-        >
-          <option value="all">All Departments</option>
-          <option value="sanitation">Sanitation</option>
-          <option value="public-works">Public Works</option>
-          <option value="electricity">Electricity</option>
-        </select>
-
-        <select
-          aria-label="Sort reports"
-          value={sortOrder}
-          onChange={(e) => setSortOrder(e.target.value)}
-          className="border rounded p-2"
-        >
-          <option value="newest">Newest First</option>
-          <option value="oldest">Oldest First</option>
-        </select>
-
-        <button
-          onClick={clearFilters}
-          className="bg-gray-200 hover:bg-gray-300 text-sm px-4 py-2 rounded transition dark:text-gray-50 dark:bg-gray-800 dark:hover:bg-gray-900"
-        >
-          Clear Filters
-        </button>
-        
-        <button 
-          onClick={() => navigate("/dashboard/admin/insights")}
-          className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition"
-        >
-          View Insights
-        </button>
+          <button
+            onClick={() => navigate("/dashboard/admin/insights")}
+            className="flex items-center justify-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-md transition"
+          >
+            <FaChartBar />
+            View Insights
+          </button>
+        </div>
       </div>
 
       {/* Loading State */}
@@ -196,39 +172,29 @@ export default function AdminDashboard() {
             viewBox="0 0 24 24"
             aria-label="Loading"
           >
-            <circle
-              className="opacity-25"
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              strokeWidth="4"
-            ></circle>
-            <path
-              className="opacity-75"
-              fill="currentColor"
-              d="M4 12a8 8 0 018-8v8H4z"
-            ></path>
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
           </svg>
         </div>
       ) : (
         <div className="grid gap-6">
-          {filtered.length === 0 && (
-            <div className="text-gray-600 text-center">No reports found.</div>
+          {filtered.length === 0 ? (
+            <div className="text-gray-600 dark:text-gray-400 text-center">No reports found.</div>
+          ) : (
+            filtered.map((r) => (
+              <div
+                key={r._id}
+                className="bg-gray-50 dark:bg-gray-900 p-6 rounded shadow hover:shadow-lg transition cursor-pointer"
+                aria-label={`Report titled ${r.title}`}
+              >
+                <ReportCard
+                  report={r}
+                  onMarkResolved={markResolved}
+                  onAssignDept={assignToDept}
+                />
+              </div>
+            ))
           )}
-          {filtered.map((r) => (
-            <div
-              key={r._id}
-              className="bg-gray-50 p-6 dark:bg-gray-900 rounded shadow hover:shadow-lg transition cursor-pointer"
-              aria-label={`Report titled ${r.title}`}
-            >
-              <ReportCard
-                report={r}
-                onMarkResolved={markResolved}
-                onAssignDept={assignToDept}
-              />
-            </div>
-          ))}
         </div>
       )}
     </div>
