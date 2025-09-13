@@ -24,7 +24,7 @@ export default function Login() {
   };
 
   return (
-    <div className="max-w-md mx-auto bg-white p-6 rounded shadow">
+    <div className="max-w-md bg-gray-50 text-gray-950 dark:text-gray-50 dark:bg-gray-800 mx-auto p-6  rounded shadow">
       <h2 className="text-xl font-semibold mb-4">Login</h2>
       {err && <div className="text-red-600 mb-2">{err}</div>}
       <form onSubmit={submit} className="space-y-3">
