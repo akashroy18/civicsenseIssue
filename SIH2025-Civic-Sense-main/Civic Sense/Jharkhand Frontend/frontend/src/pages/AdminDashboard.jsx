@@ -101,10 +101,10 @@ export default function AdminDashboard() {
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
-      <h2 className="text-3xl font-bold mb-6">Admin Dashboard</h2>
+      <h2 className="text-3xl text-gray-950 dark:text-gray-50 font-bold mb-6">Admin Dashboard</h2>
 
       {/* Filters Card */}
-      <div className="bg-white p-4 rounded-md shadow-md flex flex-wrap gap-4 mb-8 items-center dark:bg-gray-950 dark:text-gray-50">
+      <div className="bg-white p-4 rounded-md shadow-md flex flex-wrap gap-4 mb-8 items-center dark:bg-gray-900 dark:text-gray-50">
         <input
           type="text"
           aria-label="Search reports"
@@ -173,7 +173,7 @@ export default function AdminDashboard() {
 
         <button
           onClick={clearFilters}
-          className="bg-gray-200 hover:bg-gray-300 text-sm px-4 py-2 rounded transition dark:text-gray-50 dark:bg-gray-950"
+          className="bg-gray-200 hover:bg-gray-300 text-sm px-4 py-2 rounded transition dark:text-gray-50 dark:bg-gray-800 dark:hover:bg-gray-900"
         >
           Clear Filters
         </button>
@@ -219,7 +219,7 @@ export default function AdminDashboard() {
           {filtered.map((r) => (
             <div
               key={r._id}
-              className="bg-white p-6 rounded shadow hover:shadow-lg transition cursor-pointer"
+              className="bg-gray-50 p-6 dark:bg-gray-900 rounded shadow hover:shadow-lg transition cursor-pointer"
               aria-label={`Report titled ${r.title}`}
             >
               <ReportCard

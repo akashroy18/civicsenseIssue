@@ -81,7 +81,7 @@ export default function Header() {
           <button
             onClick={() => setDarkMode(!darkMode)}
             aria-label="Toggle Dark Mode"
-            className="ml-4 p-2 rounded-md bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 transition focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="ml-4 p-2 rounded-md bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 transition focus:outline-none focus:ring-2 focus:ring-indigo-500"
             title="Toggle Dark Mode"
           >
             {darkMode ? '☀️' : '🌙'}

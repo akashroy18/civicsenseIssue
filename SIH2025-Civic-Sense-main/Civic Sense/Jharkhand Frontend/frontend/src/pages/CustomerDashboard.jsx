@@ -29,8 +29,8 @@ export default function CustomerDashboard() {
   };
 
   return (
-    <div>
-      <h2 className="text-xl font-semibold mb-4">Your Reports</h2>
+    <div className='p-6 max-w-7xl mx-auto'>
+      <h2 className="text-xl text-gray-950 dark:text-gray-50 font-semibold mb-4">Your Reports</h2>
       {loading ? (
         <div>Loading...</div>
       ) : (

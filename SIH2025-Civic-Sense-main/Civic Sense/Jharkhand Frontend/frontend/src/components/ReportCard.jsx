@@ -20,7 +20,7 @@ export default function ReportCard({ report, onMarkResolved }) {
 
   return (
     <article
-      className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-gray-100"
+      className="bg-white p-6 dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-gray-100 dark:border-gray-900"
       aria-label={`Report titled ${report.title}`}
     >
       <div className="flex flex-col md:flex-row gap-6">
@@ -59,13 +59,13 @@ export default function ReportCard({ report, onMarkResolved }) {
         <div className="flex-1 flex flex-col justify-between gap-4">
           <div>
             <h3
-              className="text-xl font-semibold text-gray-900 truncate"
+              className="text-xl font-semibold text-gray-900 dark:text-gray-50 truncate"
               title={report.title}
             >
               {report.title || 'Untitled Report'}
             </h3>
             <p
-              className="text-sm text-gray-600 mt-1 line-clamp-3"
+              className="text-sm text-gray-600 dark:text-gray-400 mt-1 line-clamp-3"
               title={report.description}
             >
               {report.description || 'No description provided.'}
@@ -74,7 +74,7 @@ export default function ReportCard({ report, onMarkResolved }) {
 
           <div className="flex flex-wrap gap-3 text-sm text-gray-500">
             <span>
-              <span className="font-medium text-gray-700">Category:</span> {report.category || 'N/A'}
+              <span className="font-medium text-gray-700 dark:text-gray-300">Category:</span> {report.category || 'N/A'}
             </span>
 
             <span
@@ -104,7 +104,7 @@ export default function ReportCard({ report, onMarkResolved }) {
 
           <footer className="flex flex-col md:flex-row md:items-center md:justify-between text-sm text-gray-400 pt-2 border-t mt-2">
             <span>
-              Reported by: <span className="text-gray-700 font-medium">{report.reporter?.name || 'Anonymous'}</span> • {formatDate(report.createdAt)}
+              Reported by: <span className="text-gray-700 dark:text-gray-300 font-medium">{report.reporter?.name || 'Anonymous'}</span> • {formatDate(report.createdAt)}
             </span>
 
             {userRole !== 'citizen' && report.status !== 'resolved' && (
