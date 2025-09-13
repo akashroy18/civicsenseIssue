@@ -7,7 +7,7 @@ export default function MapPreview({ lat, lng, address }) {
       <div className="map-snap">
         <iframe title="map" src={src} width="100%" height="100%" style={{ border: 0 }} allowFullScreen loading="lazy"></iframe>
       </div>
-      {address && <div className="text-xs text-gray-500 mt-1">{address}</div>}
+      {address && <div className="text-xs dark:text-gray-300 text-gray-500 mt-1">{address}</div>}
     </div>
   );
 }
