@@ -51,7 +51,7 @@ export default function Signup() {
   //   </div>
   // );
   return (
-    <div className="flex-grow flex-col flex items-center justify-center bg-gray-100 dark:bg-gray-900 min-h-[50vh]">
+    <div className="flex-grow flex-col flex items-center justify-center bg-gray-50 dark:bg-gray-900 min-h-[50vh]">
       <div className="max-w-md mx-auto bg-white dark:bg-gray-800 dark:text-gray-50 p-6 rounded shadow">
         <h2 className="text-xl font-semibold mb-4">Signup</h2>
         {err && <div className="text-red-600 mb-2">{err}</div>}
