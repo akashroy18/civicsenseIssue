@@ -91,7 +91,7 @@ export default function ReportPage() {
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="p-3 border rounded-md w-1/2"
+            className="p-3 border rounded-md w-1/2 dark:bg-gray-800"
           >
             <option value="pothole">Pothole</option>
             <option value="streetlight">Streetlight</option>
@@ -104,7 +104,7 @@ export default function ReportPage() {
           <select
             value={priority}
             onChange={(e) => setPriority(e.target.value)}
-            className="p-3 border rounded-md w-1/2"
+            className="p-3 border rounded-md w-1/2 dark:bg-gray-800"
           >
             <option value="low">Low</option>
             <option value="medium">Medium</option>
