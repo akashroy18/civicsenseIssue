@@ -74,10 +74,10 @@ export default function LandingPage() {
 
         {/* Hero Section */}
         <section className="text-center max-w-3xl mx-auto mb-16 ">
-          <h1 className="text-4xl font-extrabold mb-4 hover-up-down">
+          <h1 className="text-4xl text-gray-900 dark:text-gray-50 font-extrabold mb-4 hover-up-down">
             Report Local Civic Issues — Fast & Easy
           </h1>
-          <p className="text-lg text-gray-950 mb-8 hover-up-down">
+          <p className="text-lg text-gray-950 dark:text-gray-300 mb-8 hover-up-down">
             Submit photos and locations of potholes, streetlight problems, or garbage. Municipal staff can manage and resolve reports quickly.
           </p>
           <a
@@ -91,7 +91,7 @@ export default function LandingPage() {
         {/* Features Section */}
         <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-20 ">
           {features.map(({ title, description, icon }) => (
-            <div key={title} className="bg-white p-6 rounded-lg shadow hover:shadow-lg transition cursor-default hover-up-down dark:bg-gray-900 dark:text-gray-50">
+            <div key={title} className="bg-white p-6 rounded-lg shadow hover:shadow-lg transition cursor-default hover-up-down dark:bg-gray-800 dark:text-gray-50">
               <div className="mb-4">{icon}</div>
               <h3 className="text-xl font-semibold mb-2">{title}</h3>
               <p className="text-gray-600 dark:text-gray-50">{description}</p>
@@ -104,7 +104,7 @@ export default function LandingPage() {
           <h2 className="text-3xl font-bold text-center mb-12 hover-up-down">How It Works</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-12">
             {steps.map(({ number, title, description }) => (
-              <div key={number} className="bg-white p-6 rounded-lg shadow text-center hover-up-down dark:bg-gray-900">
+              <div key={number} className="bg-white p-6 rounded-lg shadow text-center hover-up-down dark:bg-gray-800">
                 <div className="text-indigo-600 text-4xl font-bold mb-4">{number}</div>
                 <h3 className="text-xl font-semibold mb-2 dark:text-gray-50">{title}</h3>
                 <p className="text-gray-700 dark:text-gray-50">{description}</p>
@@ -120,7 +120,7 @@ export default function LandingPage() {
             {testimonials.map(({ name, quote }) => (
               <blockquote
                 key={name}
-                className="bg-white p-8 rounded-lg shadow italic text-gray-800 hover-up-down dark:bg-gray-900 dark:text-gray-50"
+                className="bg-white p-8 rounded-lg shadow italic text-gray-800 hover-up-down dark:bg-gray-800 dark:text-gray-50"
               >
                 <p className="mb-4 text-lg">"{quote}"</p>
                 <footer className="text-right font-semibold">— {name}</footer>
