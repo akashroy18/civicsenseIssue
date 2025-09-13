@@ -77,7 +77,7 @@ export default function AdminInsights() {
   return (
     <div className="p-6 max-w-7xl mx-auto">
       <div className="flex items-center justify-between mb-8">
-        <h2 className="text-3xl font-bold text-gray-900 dark:text-white">📊 Reports Insights</h2>
+        <h2 className="text-3xl font-bold text-gray-900 dark:text-white"> Reports Insights</h2>
         <button 
           onClick={() => window.location.reload()}
           className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition flex items-center gap-2"
@@ -98,7 +98,7 @@ export default function AdminInsights() {
           </p>
         </div>
         
-        <div className="bg-white p-6 rounded-lg shadow-md dark:bg-gray-800">
+        <div className="bg-gray-50 p-6 rounded-lg shadow-md dark:bg-gray-800">
           <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Unique Locations</h3>
           <p className="text-3xl font-bold text-indigo-600">{data.byLocation.length}</p>
         </div>
@@ -172,7 +172,7 @@ export default function AdminInsights() {
 
       {/* Data Tables for detailed view */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
-        <div className="bg-white p-6 rounded-lg shadow-md dark:bg-gray-800">
+        <div className="bg-gray-50 text-gray-950 dark:text-gray-300  p-6 rounded-lg shadow-md dark:bg-gray-800">
           <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Category Breakdown</h3>
           <div className="overflow-x-auto">
             <table className="min-w-full table-auto">
@@ -194,7 +194,7 @@ export default function AdminInsights() {
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-md dark:bg-gray-800">
+        <div className="bg-white text-gray-950 dark:text-gray-300 p-6 rounded-lg shadow-md dark:bg-gray-800">
           <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Location Breakdown</h3>
           <div className="overflow-x-auto">
             <table className="min-w-full table-auto">

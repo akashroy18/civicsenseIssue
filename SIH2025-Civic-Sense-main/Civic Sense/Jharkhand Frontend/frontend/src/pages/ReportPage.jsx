@@ -63,7 +63,7 @@ export default function ReportPage() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto bg-white p-6 rounded-xl shadow-md mt-6">
+    <div className="max-w-2xl mx-auto text-gray-950 dark:text-gray-50 bg-gray-50 dark:bg-gray-800 p-6 rounded-xl shadow-md mt-6">
       <h2 className="text-2xl font-bold mb-4">Create a Report</h2>
 
       {msg && (
