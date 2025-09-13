@@ -10,7 +10,11 @@ const reportSchema = new mongoose.Schema(
       default: 'other'
     },
     priority: { type: String, enum: ['low', 'medium', 'high', 'critical'], default: 'low' },
-    status: { type: String, enum: ['pending', 'acknowledged', 'in-progress', 'resolved'], default: 'pending' },
+    status: { 
+      type: String, 
+      enum: ['pending', 'in review', 'in progress', 'resolved'], 
+      default: 'pending' 
+    },
     imageUrl: { type: String, default: '' }, // Cloudinary URL string
     location: {
       type: { type: String, enum: ['Point'], default: 'Point' },

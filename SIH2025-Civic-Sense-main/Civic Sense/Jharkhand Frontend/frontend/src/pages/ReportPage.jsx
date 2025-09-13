@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import API from '../services/api';
+import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 export default function ReportPage() {
+  const navigate = useNavigate();
+
+  // form states
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('pothole');
@@ -11,10 +16,16 @@ export default function ReportPage() {
   const [address, setAddress] = useState('');
   const [lat, setLat] = useState('');
   const [lng, setLng] = useState('');
-  const [msg, setMsg] = useState('');
   const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState(null);
 
+  // validation error states
+  const [errors, setErrors] = useState({});
+
+  // Get user role
+  const userRole = localStorage.getItem('role') || 'customer'; // fallback
+
+  // location fetch
   const getLocation = () => {
     if (!navigator.geolocation) return alert('Geolocation not supported');
     navigator.geolocation.getCurrentPosition(
@@ -26,8 +37,31 @@ export default function ReportPage() {
     );
   };
 
+  // validation
+  const validateForm = () => {
+    let newErrors = {};
+
+    if (!title.trim()) {
+      newErrors.title = 'Title is required';
+    }
+
+    if (lat && isNaN(lat)) {
+      newErrors.lat = 'Invalid coordinates';
+    }
+    if (lng && isNaN(lng)) {
+      newErrors.lng = 'Invalid coordinates';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  // submit handler
   const submit = async (e) => {
     e.preventDefault();
+
+    if (!validateForm()) return;
+
     setLoading(true);
     try {
       const form = new FormData();
@@ -44,7 +78,8 @@ export default function ReportPage() {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
 
-      setMsg('Report submitted successfully');
+      toast.success('✅ Report submitted successfully!');
+
       // Clear form
       setTitle('');
       setDescription('');
@@ -55,8 +90,19 @@ export default function ReportPage() {
       setLng('');
       setFile(null);
       setFileName('No file chosen');
+      setPreview(null);
+      setErrors({});
+
+      // redirect after short delay
+      setTimeout(() => {
+        if (userRole === 'admin') {
+          navigate('/dashboard/admin');
+        } else {
+          navigate('/dashboard/customer');
+        }
+      }, 1500);
     } catch (err) {
-      setMsg(err?.response?.data?.message || 'Submission failed');
+      toast.error(err?.response?.data?.message || '❌ Submission failed');
     } finally {
       setLoading(false);
     }
@@ -66,20 +112,23 @@ export default function ReportPage() {
     <div className="max-w-2xl mx-auto text-gray-950 dark:text-gray-50 bg-gray-50 dark:bg-gray-800 p-6 rounded-xl shadow-md mt-6">
       <h2 className="text-2xl font-bold mb-4">Create a Report</h2>
 
-      {msg && (
-        <div className="mb-4 px-4 py-2 bg-green-100 border border-green-300 text-green-800 rounded text-sm">
-          {msg}
-        </div>
-      )}
-
       <form onSubmit={submit} className="space-y-4">
-        <input
-          className="w-full p-3 border rounded-md"
-          placeholder="Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
-        />
+        {/* title */}
+        <div>
+          <input
+            className={`w-full p-3 border rounded-md ${
+              errors.title ? 'border-red-500' : ''
+            }`}
+            placeholder="Title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          {errors.title && (
+            <p className="text-red-500 text-sm mt-1">{errors.title}</p>
+          )}
+        </div>
+
+        {/* description */}
         <textarea
           className="w-full p-3 border rounded-md"
           placeholder="Description"
@@ -87,11 +136,12 @@ export default function ReportPage() {
           onChange={(e) => setDescription(e.target.value)}
         />
 
+        {/* category & priority */}
         <div className="flex gap-3">
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="p-3 border rounded-md w-1/2 dark:bg-gray-800"
+            className="p-3 border rounded-md w-1/2 dark:bg-gray-800 dark:text-gray-50"
           >
             <option value="pothole">Pothole</option>
             <option value="streetlight">Streetlight</option>
@@ -104,7 +154,7 @@ export default function ReportPage() {
           <select
             value={priority}
             onChange={(e) => setPriority(e.target.value)}
-            className="p-3 border rounded-md w-1/2 dark:bg-gray-800"
+            className="p-3 border rounded-md w-1/2 dark:bg-gray-800 dark:text-gray-50"
           >
             <option value="low">Low</option>
             <option value="medium">Medium</option>
@@ -113,6 +163,7 @@ export default function ReportPage() {
           </select>
         </div>
 
+        {/* address + location */}
         <div className="flex gap-3">
           <input
             className="flex-1 p-3 border rounded-md"
@@ -125,25 +176,42 @@ export default function ReportPage() {
             onClick={getLocation}
             className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
           >
-             Use my location
+            Use my location
           </button>
         </div>
 
+        {/* lat/lng */}
         <div className="flex gap-3">
-          <input
-            className="w-1/2 p-3 border rounded-md"
-            placeholder="Latitude"
-            value={lat}
-            onChange={(e) => setLat(e.target.value)}
-          />
-          <input
-            className="w-1/2 p-3 border rounded-md"
-            placeholder="Longitude"
-            value={lng}
-            onChange={(e) => setLng(e.target.value)}
-          />
+          <div className="w-1/2">
+            <input
+              className={`w-full p-3 border rounded-md ${
+                errors.lat ? 'border-red-500' : ''
+              }`}
+              placeholder="Latitude"
+              value={lat}
+              onChange={(e) => setLat(e.target.value)}
+            />
+            {errors.lat && (
+              <p className="text-red-500 text-sm mt-1">{errors.lat}</p>
+            )}
+          </div>
+
+          <div className="w-1/2">
+            <input
+              className={`w-full p-3 border rounded-md ${
+                errors.lng ? 'border-red-500' : ''
+              }`}
+              placeholder="Longitude"
+              value={lng}
+              onChange={(e) => setLng(e.target.value)}
+            />
+            {errors.lng && (
+              <p className="text-red-500 text-sm mt-1">{errors.lng}</p>
+            )}
+          </div>
         </div>
 
+        {/* file upload */}
         <div>
           <label className="block text-sm mb-1 font-medium">Upload photo</label>
           <div className="flex items-center gap-4">
@@ -154,8 +222,7 @@ export default function ReportPage() {
                 accept="image/*"
                 onChange={(e) => {
                   const selectedFile = e.target.files[0];
-
-                  if(!selectedFile) return;
+                  if (!selectedFile) return;
 
                   if (!selectedFile.type.startsWith('image/')) {
                     alert('Only image files are allowed.');
@@ -177,10 +244,7 @@ export default function ReportPage() {
                   setFileName(selectedFile.name);
 
                   const reader = new FileReader();
-                  reader.onloadend = () => {
-                    setPreview(reader.result); 
-                  };
-
+                  reader.onloadend = () => setPreview(reader.result);
                   reader.readAsDataURL(selectedFile);
                 }}
                 className="hidden"
@@ -188,7 +252,8 @@ export default function ReportPage() {
             </label>
             <span className="text-sm text-gray-600 truncate max-w-xs">{fileName}</span>
           </div>
-           {preview && (
+
+          {preview && (
             <div className="mt-3">
               <p className="text-sm text-gray-600 mb-1">Image Preview:</p>
               <img
@@ -198,14 +263,15 @@ export default function ReportPage() {
               />
             </div>
           )}
-
         </div>
-        
 
+        {/* submit */}
         <button
           type="submit"
           className={`w-full py-3 text-white rounded-md ${
-            loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700'
+            loading
+              ? 'bg-gray-400 cursor-not-allowed'
+              : 'bg-indigo-600 hover:bg-indigo-700'
           } transition-all`}
           disabled={loading}
         >
